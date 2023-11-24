@@ -20,7 +20,11 @@ RUN wget https://github.com/pocketbase/pocketbase/releases/download/v${VERSION}/
 
 FROM scratch
 
+# Add CA certificates
+COPY --from=downloader /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
 EXPOSE 8090
 
 COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
 CMD ["/usr/local/bin/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb_data", "--publicDir=/pb_public"]
+
